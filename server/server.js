@@ -1,5 +1,7 @@
 const express = require('express');
 const path = require('path');
+//import apollo server
+const { ApolloServer } = require('apollo-server-express');
 const db = require('./config/connection');
 const routes = require('./routes');
 
