@@ -9,7 +9,11 @@ import Auth from '../utils/auth';
 const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
 
-  const [login, { error }] = useMutation(LOGIN_USER)
+  const [login] = useMutation(LOGIN_USER)
+
+  const [validated] = useState(false);
+
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -37,8 +41,10 @@ const LoginForm = () => {
       });
 
       Auth.login(data.login.token);
+
     } catch (e) {
       console.error(e);
+      setShowAlert(true);
     }
 
     setUserFormData({
@@ -49,7 +55,10 @@ const LoginForm = () => {
 
   return (
     <>
-      <Form onSubmit={handleFormSubmit}>
+      <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
+        <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
+          Something went wrong with your login credentials!
+        </Alert>
         <Form.Group>
           <Form.Label htmlFor='email'>Email</Form.Label>
           <Form.Control
@@ -82,7 +91,6 @@ const LoginForm = () => {
           Submit
         </Button>
       </Form>
-      {error && <div>login failed</div>}
     </>
   );
 };

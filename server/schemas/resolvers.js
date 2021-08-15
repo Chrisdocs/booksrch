@@ -1,4 +1,4 @@
-const { Book, User } = require('../models');
+const { bookSchema, User } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 
@@ -13,13 +13,13 @@ const resolvers = {
             }
         },
 
-        books: async (parent, { title }) => {
-            const params = title ? { title } : {}
-            return Book.find(params).sort({})
-        },
-        book: async (parent, { bookId }) => {
-            return Book.findOne({ bookId })
-        },
+        // books: async (parent, { title }) => {
+        //     const params = title ? { title } : {}
+        //     return Book.find(params).sort({})
+        // },
+        // book: async (parent, { bookId }) => {
+        //     return Book.findOne({ bookId })
+        // },
 
         // get all users
         users: async () => {
@@ -55,6 +55,7 @@ const resolvers = {
         },
 
         addUser: async (parent, args) => {
+            console.log("========> ", args)
             const user = await User.create(args);
             const token = signToken(user)
 
